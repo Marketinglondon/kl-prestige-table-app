@@ -19,7 +19,6 @@
     min-height: 100vh;
   }
 
-  /* Pantalla de bienvenida */
   #introScreen {
     position: fixed;
     inset: 0;
@@ -46,19 +45,25 @@
     font-weight: normal;
     margin-bottom: 8px;
   }
-  #introScreen p {
-    color: #999;
-    font-size: 0.85em;
-    letter-spacing: 1px;
+  #introScreen .subtitulo {
+    font-size: 0.95em;
+    letter-spacing: 3px;
+    color: var(--dorado-claro);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  #introScreen .descripcion {
+    font-size: 0.8em;
+    color: #888;
     margin-bottom: 28px;
   }
   .btn-ingresar {
-    padding: 14px 50px;
+    padding: 14px 40px;
     background: var(--dorado);
     color: #000;
     border: none;
     border-radius: 30px;
-    font-size: 1em;
+    font-size: 0.95em;
     font-weight: bold;
     letter-spacing: 2px;
     cursor: pointer;
@@ -184,7 +189,6 @@
     padding: 60px 20px;
     grid-column: 1 / -1;
   }
-  /* Modal */
   .modal-overlay {
     display: none;
     position: fixed;
@@ -285,8 +289,9 @@
 <div id="introScreen">
   <video src="assets/video/intro.mp4" autoplay muted loop playsinline></video>
   <h1>KL PRESTIGE TABLE</h1>
-  <p>Catálogo de Mesas y Elegancia</p>
-  <button class="btn-ingresar" onclick="ingresarCatalogo()">Ingresar</button>
+  <p class="subtitulo">Where Elegance Begins</p>
+  <p class="descripcion">A refined selection for exceptional occasions.</p>
+  <button class="btn-ingresar" onclick="ingresarCatalogo()">Discover the Collection</button>
 </div>
 
 <div id="catalogo">
@@ -332,7 +337,7 @@
 <script>
   const FIREBASE_PROJECT_ID = "kl-prestige-table";
   const FIRESTORE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/productos`;
-  const WHATSAPP_NUMERO = "50000000000"; // reemplazar por el número real
+  const WHATSAPP_NUMERO = "50000000000";
 
   const CATEGORIAS_FIJAS = [
     "Mesas",
