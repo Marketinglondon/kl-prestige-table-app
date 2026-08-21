@@ -109,54 +109,55 @@
   }
 
   .nav-botones-wrap {
-    max-width: 900px;
+    max-width: 700px;
     margin: 0 auto;
     padding: 0 20px 20px;
   }
   .nav-botones {
     display: flex;
-    gap: 10px;
-    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 36px;
+    border-bottom: 1px solid #2a2a2a;
   }
   .btn-nav {
-    flex: 1;
-    min-width: 0;
-    padding: 12px 6px;
-    background: var(--negro-card);
-    color: var(--dorado);
-    border: 1px solid var(--dorado);
-    border-radius: 10px;
-    font-size: 0.7em;
-    letter-spacing: 0.5px;
+    background: none;
+    border: none;
+    color: #888;
+    font-family: 'Georgia', serif;
+    font-size: 0.85em;
+    letter-spacing: 2px;
     text-transform: uppercase;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
+    padding: 12px 2px;
     position: relative;
-    white-space: nowrap;
-    text-align: center;
+    transition: color 0.2s;
   }
-  .btn-nav .flecha {
-    transition: transform 0.2s;
-    font-size: 0.8em;
-    flex-shrink: 0;
+  .btn-nav:hover {
+    color: var(--dorado-claro);
   }
-  .btn-nav.abierto .flecha {
-    transform: rotate(180deg);
+  .btn-nav.abierto {
+    color: var(--dorado);
+  }
+  .btn-nav.abierto::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--dorado);
   }
   .badge-carrito {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: 2px;
+    right: -14px;
     background: var(--dorado);
     color: #000;
-    font-size: 0.7em;
+    font-size: 0.6em;
     font-weight: bold;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -164,14 +165,11 @@
 
   .home-contenido {
     display: none;
-    padding: 20px;
-    margin-top: 14px;
-    background: var(--negro-card);
-    border: 1px solid var(--dorado);
-    border-radius: 10px;
+    padding: 24px 4px;
     color: #ccc;
     font-size: 0.95em;
     line-height: 1.7;
+    text-align: center;
   }
   .home-contenido.abierto {
     display: block;
@@ -180,36 +178,35 @@
   .categorias {
     display: none;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
-    padding: 14px 0 0;
+    padding: 20px 0 0;
   }
   .categorias.abierto {
     display: flex;
   }
   .categoria-btn {
-    padding: 8px 18px;
+    padding: 7px 16px;
     border-radius: 20px;
-    border: 1px solid var(--dorado);
+    border: 1px solid #444;
     background: transparent;
-    color: var(--dorado);
-    font-size: 0.85em;
+    color: #bbb;
+    font-size: 0.8em;
     cursor: pointer;
     white-space: nowrap;
     letter-spacing: 1px;
+    transition: all 0.2s;
   }
   .categoria-btn.activa {
     background: var(--dorado);
     color: #000;
+    border-color: var(--dorado);
     font-weight: bold;
   }
 
   .reserva-contenido {
     display: none;
-    padding: 20px;
-    margin-top: 14px;
-    background: var(--negro-card);
-    border: 1px solid var(--dorado);
-    border-radius: 10px;
+    padding: 20px 4px;
   }
   .reserva-contenido.abierto {
     display: block;
@@ -507,17 +504,10 @@
 
 <div class="nav-botones-wrap">
   <div class="nav-botones">
-    <button class="btn-nav" id="btnHome" onclick="toggleVista('home')">
-      <span>Home</span>
-      <span class="flecha">▼</span>
-    </button>
-    <button class="btn-nav" id="btnProductos" onclick="toggleVista('products')">
-      <span>Products</span>
-      <span class="flecha">▼</span>
-    </button>
+    <button class="btn-nav" id="btnHome" onclick="toggleVista('home')">Home</button>
+    <button class="btn-nav" id="btnProductos" onclick="toggleVista('products')">Products</button>
     <button class="btn-nav" id="btnReserva" onclick="toggleVista('reserva')">
-      <span>My Reservation</span>
-      <span class="flecha">▼</span>
+      My Reservation
       <span class="badge-carrito" id="badgeCarrito" style="display:none;">0</span>
     </button>
   </div>
