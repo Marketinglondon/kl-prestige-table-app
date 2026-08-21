@@ -116,29 +116,32 @@
   .nav-botones {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
   .btn-nav {
     flex: 1;
-    min-width: 100px;
-    padding: 14px 10px;
+    min-width: 0;
+    padding: 12px 6px;
     background: var(--negro-card);
     color: var(--dorado);
     border: 1px solid var(--dorado);
     border-radius: 10px;
-    font-size: 0.85em;
-    letter-spacing: 1px;
+    font-size: 0.7em;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 4px;
     position: relative;
+    white-space: nowrap;
+    text-align: center;
   }
   .btn-nav .flecha {
     transition: transform 0.2s;
     font-size: 0.8em;
+    flex-shrink: 0;
   }
   .btn-nav.abierto .flecha {
     transform: rotate(180deg);
