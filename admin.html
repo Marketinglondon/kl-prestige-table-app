@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KL Prestige Table — Admin</title>
+<style>
+  :root {
+    --dorado: #D4AF37;
+    --negro: #0a0a0a;
+    --negro-card: #161616;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--negro);
+    color: #fff;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    min-height: 100vh;
+  }
+  .wrap {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  h1 {
+    color: var(--dorado);
+    text-align: center;
+    letter-spacing: 2px;
+    font-size: 1.4em;
+    margin-bottom: 24px;
+  }
+  /* Login */
+  #loginScreen {
+    max-width: 340px;
+    margin: 80px auto;
+    text-align: center;
+    padding: 0 20px;
+  }
+  #loginScreen input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 30px;
+    border: 1px solid var(--dorado);
+    background: var(--negro-card);
+    color: #fff;
+    font-size: 1em;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  #loginScreen button {
+    width: 100%;
+    padding: 14px;
+    background: var(--dorado);
+    color: #000;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+  }
+  #loginError {
+    color: #e57373;
+    margin-top: 10px;
+    font-size: 0.85em;
+  }
+
+  #adminScreen { display: none; }
+
+  label {
+    display: block;
+    color: #aaa;
+    font-size: 0.8em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 16px 0 6px;
+  }
+  input[type="text"], input[type="number"], select, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: var(--negro-card);
+    color: #fff;
+    font-size: 1em;
+    font-family: inherit;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--dorado);
+  }
+  textarea { resize: vertical; min-height: 70px; }
+
+  input[type="file"] {
+    margin-top: 8px;
+    color: #ccc;
+  }
+
+  .preview-imgs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .preview-imgs img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #333;
+  }
+
+  .btn-publicar {
+    width: 100%;
+    padding: 14px;
+    margin-top: 22px;
+    background: var(--dorado);
+    color: #000;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  .btn-publicar:disabled {
+    opacity: 0.5;
+  }
+
+  #statusMsg {
+    margin-top: 14px;
+    text-align: center;
+    font-size: 0.9em;
+  }
+  #statusMsg.ok { color: #81c784; }
+  #statusMsg.error { color: #e57373; }
+
+  .lista-productos {
+    margin-top: 40px;
+    border-top: 1px solid #2a2a2a;
+    padding-top: 20px;
+  }
+  .lista-productos h2 {
+    color: var(--dorado);
+    font-size: 1.1em;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .item-producto {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #222;
+  }
+  .item-producto img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+    background: #222;
+  }
+  .item-producto .info { flex: 1; }
+  .item-producto .nombre { font-size: 0.95em; }
+  .item-producto .detalle { color: #888; font-size: 0.75em; }
+  .item-producto button {
+    background: none;
+    border: 1px solid #e57373;
+    color: #e57373;
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 0.8em;
+  }
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+  <h1>KL PRESTIGE TABLE<br>ADMIN</h1>
+  <input type="text" id="passwordInput" placeholder="Enter password" autocomplete="off">
+  <button onclick="intentarLogin()">Enter</button>
+  <div id="loginError"></div>
+</div>
+
+<div id="adminScreen">
+  <div class="wrap">
+    <h1>KL PRESTIGE TABLE — ADMIN</h1>
+
+    <label>Product name</label>
+    <input type="text" id="nombre" placeholder="e.g. Round Gold Table">
+
+    <label>Category</label>
+    <select id="categoria"></select>
+
+    <label>Price (£)</label>
+    <input type="number" id="precio" placeholder="0.00" step="0.01">
+
+    <label>Description</label>
+    <textarea id="descripcion" placeholder="Optional description"></textarea>
+
+    <label>Photos</label>
+    <input type="file" id="fotos" accept="image/*" multiple>
+    <div class="preview-imgs" id="previewImgs"></div>
+
+    <button class="btn-publicar" id="btnPublicar" onclick="publicarProducto()">Publish product</button>
+    <div id="statusMsg"></div>
+
+    <div class="lista-productos">
+      <h2>Existing products</h2>
+      <div id="listaProductos">Loading...</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const ADMIN_PASSWORD = "KLPrestige2026";
+  const FIREBASE_PROJECT_ID = "kl-prestige-table";
+  const FIRESTORE_BASE = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/productos`;
+  const CLOUDINARY_CLOUD_NAME = "iggcl810";
+  const CLOUDINARY_UPLOAD_PRESET = "klprestige_unsigned";
+  const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
+
+  const CATEGORIAS_FIJAS = [
+    "Tables",
+    "Chairs",
+    "Tablecloths",
+    "Centerpieces",
+    "Lighting",
+    "Decoration",
+    "Tableware",
+    "Glassware"
+  ];
+
+  let archivosSeleccionados = [];
+
+  function intentarLogin() {
+    const val = document.getElementById("passwordInput").value;
+    if (val === ADMIN_PASSWORD) {
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("adminScreen").style.display = "block";
+      iniciarAdmin();
+    } else {
+      document.getElementById("loginError").textContent = "Incorrect password.";
+    }
+  }
+
+  document.getElementById("passwordInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") intentarLogin();
+  });
+
+  function iniciarAdmin() {
+    const sel = document.getElementById("categoria");
+    sel.innerHTML = CATEGORIAS_FIJAS.map(c => `<option value="${c}">${c}</option>`).join("");
+    document.getElementById("fotos").addEventListener("change", manejarFotos);
+    cargarProductosExistentes();
+  }
+
+  function manejarFotos(e) {
+    archivosSeleccionados = Array.from(e.target.files);
+    const cont = document.getElementById("previewImgs");
+    cont.innerHTML = "";
+    archivosSeleccionados.forEach(file => {
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(file);
+      cont.appendChild(img);
+    });
+  }
+
+  async function subirImagenCloudinary(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+    const res = await fetch(CLOUDINARY_URL, { method: "POST", body: formData });
+    const data = await res.json();
+    return data.secure_url;
+  }
+
+  function mostrarStatus(msg, tipo) {
+    const el = document.getElementById("statusMsg");
+    el.textContent = msg;
+    el.className = tipo;
+  }
+
+  async function publicarProducto() {
+    const nombre = document.getElementById("nombre").value.trim();
+    const categoria = document.getElementById("categoria").value;
+    const precio = parseFloat(document.getElementById("precio").value);
+    const descripcion = document.getElementById("descripcion").value.trim();
+
+    if (!nombre || !precio || archivosSeleccionados.length === 0) {
+      mostrarStatus("Please fill in name, price, and at least one photo.", "error");
+      return;
+    }
+
+    const btn = document.getElementById("btnPublicar");
+    btn.disabled = true;
+    mostrarStatus("Uploading photos...", "");
+
+    try {
+      const urls = [];
+      for (const file of archivosSeleccionados) {
+        const url = await subirImagenCloudinary(file);
+        if (url) urls.push(url);
+      }
+
+      mostrarStatus("Saving product...", "");
+
+      const body = {
+        fields: {
+          nombre: { stringValue: nombre },
+          categoria: { stringValue: categoria },
+          precio: { doubleValue: precio },
+          descripcion: { stringValue: descripcion },
+          imagenes: { arrayValue: { values: urls.map(u => ({ stringValue: u })) } },
+          fechaCreacion: { stringValue: new Date().toISOString() }
+        }
+      };
+
+      const res = await fetch(FIRESTORE_BASE, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+      if (!res.ok) throw new Error("Firestore error");
+
+      mostrarStatus("Product published successfully!", "ok");
+      document.getElementById("nombre").value = "";
+      document.getElementById("precio").value = "";
+      document.getElementById("descripcion").value = "";
+      document.getElementById("fotos").value = "";
+      document.getElementById("previewImgs").innerHTML = "";
+      archivosSeleccionados = [];
+      cargarProductosExistentes();
+    } catch (e) {
+      mostrarStatus("Error publishing product. Please try again.", "error");
+      console.error(e);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  async function cargarProductosExistentes() {
+    const cont = document.getElementById("listaProductos");
+    try {
+      const res = await fetch(FIRESTORE_BASE);
+      const data = await res.json();
+      const docs = data.documents || [];
+
+      if (docs.length === 0) {
+        cont.innerHTML = '<p style="color:#777;">No products yet.</p>';
+        return;
+      }
+
+      cont.innerHTML = docs.map(doc => {
+        const f = doc.fields || {};
+        const id = doc.name.split("/").pop();
+        const nombre = f.nombre?.stringValue || "";
+        const categoria = f.categoria?.stringValue || "";
+        const precio = parseFloat(f.precio?.doubleValue ?? f.precio?.integerValue ?? 0);
+        const imgs = f.imagenes?.arrayValue?.values || [];
+        const imgUrl = imgs.length > 0 ? imgs[0].stringValue : "";
+
+        return `
+          <div class="item-producto">
+            <img src="${imgUrl}" onerror="this.style.opacity=0">
+            <div class="info">
+              <div class="nombre">${nombre}</div>
+              <div class="detalle">${categoria} — £${precio.toFixed(2)}</div>
+            </div>
+            <button onclick="eliminarProducto('${id}')">Delete</button>
+          </div>
+        `;
+      }).join("");
+    } catch (e) {
+      cont.innerHTML = '<p style="color:#e57373;">Error loading products.</p>';
+    }
+  }
+
+  async function eliminarProducto(id) {
+    if (!confirm("Delete this product?")) return;
+    try {
+      await fetch(`${FIRESTORE_BASE}/${id}`, { method: "DELETE" });
+      cargarProductosExistentes();
+    } catch (e) {
+      alert("Error deleting product.");
+    }
+  }
+</script>
+
+</body>
+</html>
