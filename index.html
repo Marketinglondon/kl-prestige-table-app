@@ -116,22 +116,25 @@
   .nav-botones {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
   }
   .btn-nav {
     flex: 1;
-    padding: 14px 20px;
+    min-width: 100px;
+    padding: 14px 10px;
     background: var(--negro-card);
     color: var(--dorado);
     border: 1px solid var(--dorado);
     border-radius: 10px;
-    font-size: 0.95em;
-    letter-spacing: 2px;
+    font-size: 0.85em;
+    letter-spacing: 1px;
     text-transform: uppercase;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
+    position: relative;
   }
   .btn-nav .flecha {
     transition: transform 0.2s;
@@ -139,6 +142,21 @@
   }
   .btn-nav.abierto .flecha {
     transform: rotate(180deg);
+  }
+  .badge-carrito {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--dorado);
+    color: #000;
+    font-size: 0.7em;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .home-contenido {
@@ -181,13 +199,106 @@
     color: #000;
     font-weight: bold;
   }
+
+  .reserva-contenido {
+    display: none;
+    padding: 20px;
+    margin-top: 14px;
+    background: var(--negro-card);
+    border: 1px solid var(--dorado);
+    border-radius: 10px;
+  }
+  .reserva-contenido.abierto {
+    display: block;
+  }
+  .reserva-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #2a2a2a;
+    gap: 10px;
+  }
+  .reserva-item:last-of-type {
+    border-bottom: none;
+  }
+  .reserva-info {
+    flex: 1;
+  }
+  .reserva-info .nombre {
+    color: #fff;
+    font-size: 0.95em;
+    margin-bottom: 4px;
+  }
+  .reserva-info .detalle {
+    color: #888;
+    font-size: 0.8em;
+  }
+  .reserva-cantidad {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .reserva-cantidad button {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid var(--dorado);
+    background: transparent;
+    color: var(--dorado);
+    font-size: 1em;
+    cursor: pointer;
+  }
+  .reserva-subtotal {
+    color: var(--dorado);
+    font-weight: bold;
+    min-width: 65px;
+    text-align: right;
+  }
+  .reserva-vacio {
+    color: #777;
+    text-align: center;
+    padding: 20px 0;
+  }
+  .reserva-total {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0;
+    margin-top: 8px;
+    border-top: 1px solid var(--dorado);
+    color: var(--dorado);
+    font-size: 1.1em;
+    font-weight: bold;
+  }
+  .btn-reservar {
+    width: 100%;
+    padding: 14px;
+    background: var(--dorado);
+    color: #000;
+    border: none;
+    border-radius: 30px;
+    font-size: 1em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
   .grid {
-    display: grid;
+    display: none;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 20px;
     max-width: 1100px;
     margin: 0 auto;
     padding: 10px 20px 60px;
+  }
+  .grid.abierto {
+    display: grid;
   }
   .card {
     background: var(--negro-card);
@@ -304,7 +415,30 @@
     font-weight: bold;
     margin-bottom: 20px;
   }
-  .btn-whatsapp {
+  .modal-cantidad {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .modal-cantidad button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--dorado);
+    background: transparent;
+    color: var(--dorado);
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+  .modal-cantidad span {
+    color: #fff;
+    font-size: 1.1em;
+    min-width: 20px;
+    text-align: center;
+  }
+  .btn-agregar {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -314,6 +448,23 @@
     background: var(--dorado);
     color: #000;
     border: none;
+    border-radius: 30px;
+    font-size: 1em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  .btn-whatsapp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    color: var(--dorado);
+    border: 1px solid var(--dorado);
     border-radius: 30px;
     font-size: 1em;
     font-weight: bold;
@@ -353,13 +504,18 @@
 
 <div class="nav-botones-wrap">
   <div class="nav-botones">
-    <button class="btn-nav" id="btnHome" onclick="toggleHome()">
+    <button class="btn-nav" id="btnHome" onclick="toggleVista('home')">
       <span>Home</span>
       <span class="flecha">▼</span>
     </button>
-    <button class="btn-nav" id="btnProductos" onclick="toggleProductos()">
+    <button class="btn-nav" id="btnProductos" onclick="toggleVista('products')">
       <span>Products</span>
       <span class="flecha">▼</span>
+    </button>
+    <button class="btn-nav" id="btnReserva" onclick="toggleVista('reserva')">
+      <span>My Reservation</span>
+      <span class="flecha">▼</span>
+      <span class="badge-carrito" id="badgeCarrito" style="display:none;">0</span>
     </button>
   </div>
 
@@ -368,6 +524,10 @@
   </div>
 
   <div class="categorias" id="categorias"></div>
+
+  <div class="reserva-contenido" id="reservaContenido">
+    <div id="reservaLista"></div>
+  </div>
 </div>
 
 <div class="grid" id="grid">
@@ -383,6 +543,12 @@
       <h2 id="modalNombre"></h2>
       <p class="descripcion" id="modalDescripcion"></p>
       <div class="precio" id="modalPrecio"></div>
+      <div class="modal-cantidad">
+        <button onclick="cambiarCantidadModal(-1)">−</button>
+        <span id="modalCantidad">1</span>
+        <button onclick="cambiarCantidadModal(1)">+</button>
+      </div>
+      <button class="btn-agregar" onclick="agregarAReserva()">Add to My Reservation</button>
       <a href="#" id="modalWhatsapp" class="btn-whatsapp" target="_blank">
         📩 Inquire via WhatsApp
       </a>
@@ -400,6 +566,7 @@
   const FIREBASE_PROJECT_ID = "kl-prestige-table";
   const FIRESTORE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/productos`;
   const WHATSAPP_NUMERO = "50000000000";
+  const WHATSAPP_RESERVAS = "447549679289";
 
   const CATEGORIAS_FIJAS = [
     "Tables",
@@ -414,24 +581,52 @@
 
   let productos = [];
   let categoriaActiva = CATEGORIAS_FIJAS[0];
+  let vistaActiva = null;
+  let productoModal = null;
+  let cantidadModal = 1;
+  let carrito = [];
 
   function ingresarCatalogo() {
     document.getElementById("introScreen").style.display = "none";
     document.getElementById("catalogo").style.display = "block";
   }
 
-  function toggleHome() {
-    document.getElementById("homeContenido").classList.toggle("abierto");
-    document.getElementById("btnHome").classList.toggle("abierto");
-    document.getElementById("categorias").classList.remove("abierto");
-    document.getElementById("btnProductos").classList.remove("abierto");
-  }
+  function toggleVista(vista) {
+    const home = document.getElementById("homeContenido");
+    const cats = document.getElementById("categorias");
+    const grid = document.getElementById("grid");
+    const reserva = document.getElementById("reservaContenido");
+    const btnHome = document.getElementById("btnHome");
+    const btnProd = document.getElementById("btnProductos");
+    const btnRes = document.getElementById("btnReserva");
 
-  function toggleProductos() {
-    document.getElementById("categorias").classList.toggle("abierto");
-    document.getElementById("btnProductos").classList.toggle("abierto");
-    document.getElementById("homeContenido").classList.remove("abierto");
-    document.getElementById("btnHome").classList.remove("abierto");
+    if (vistaActiva === vista) {
+      vistaActiva = null;
+    } else {
+      vistaActiva = vista;
+    }
+
+    home.classList.remove("abierto");
+    cats.classList.remove("abierto");
+    grid.classList.remove("abierto");
+    reserva.classList.remove("abierto");
+    btnHome.classList.remove("abierto");
+    btnProd.classList.remove("abierto");
+    btnRes.classList.remove("abierto");
+
+    if (vistaActiva === "home") {
+      home.classList.add("abierto");
+      btnHome.classList.add("abierto");
+    } else if (vistaActiva === "products") {
+      cats.classList.add("abierto");
+      grid.classList.add("abierto");
+      btnProd.classList.add("abierto");
+      renderGrid();
+    } else if (vistaActiva === "reserva") {
+      reserva.classList.add("abierto");
+      btnRes.classList.add("abierto");
+      renderReserva();
+    }
   }
 
   function parseFirestoreDoc(doc) {
@@ -461,8 +656,6 @@
     categoriaActiva = cat;
     renderCategorias();
     renderGrid();
-    document.getElementById("categorias").classList.remove("abierto");
-    document.getElementById("btnProductos").classList.remove("abierto");
   }
 
   function renderGrid() {
@@ -492,6 +685,9 @@
   }
 
   function abrirModal(p) {
+    productoModal = p;
+    cantidadModal = 1;
+    document.getElementById("modalCantidad").textContent = cantidadModal;
     document.getElementById("modalImg").src = p.imagenes[0] || "";
     document.getElementById("modalCategoria").textContent = p.categoria;
     document.getElementById("modalNombre").textContent = p.nombre;
@@ -506,20 +702,117 @@
     document.getElementById("modalOverlay").classList.remove("activo");
   }
 
+  function cambiarCantidadModal(delta) {
+    cantidadModal = Math.max(1, cantidadModal + delta);
+    document.getElementById("modalCantidad").textContent = cantidadModal;
+  }
+
+  function agregarAReserva() {
+    if (!productoModal) return;
+    const existente = carrito.find(item => item.id === productoModal.id);
+    if (existente) {
+      existente.cantidad += cantidadModal;
+    } else {
+      carrito.push({
+        id: productoModal.id,
+        nombre: productoModal.nombre,
+        precio: productoModal.precio,
+        cantidad: cantidadModal
+      });
+    }
+    actualizarBadge();
+    cerrarModal();
+  }
+
+  function actualizarBadge() {
+    const badge = document.getElementById("badgeCarrito");
+    const totalItems = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+    if (totalItems > 0) {
+      badge.style.display = "flex";
+      badge.textContent = totalItems;
+    } else {
+      badge.style.display = "none";
+    }
+  }
+
+  function cambiarCantidadCarrito(id, delta) {
+    const item = carrito.find(i => i.id === id);
+    if (!item) return;
+    item.cantidad += delta;
+    if (item.cantidad <= 0) {
+      carrito = carrito.filter(i => i.id !== id);
+    }
+    actualizarBadge();
+    renderReserva();
+  }
+
+  function renderReserva() {
+    const lista = document.getElementById("reservaLista");
+
+    if (carrito.length === 0) {
+      lista.innerHTML = '<div class="reserva-vacio">Your reservation is empty. Add products to get started.</div>';
+      return;
+    }
+
+    let total = 0;
+    let html = carrito.map(item => {
+      const subtotal = item.precio * item.cantidad;
+      total += subtotal;
+      return `
+        <div class="reserva-item">
+          <div class="reserva-info">
+            <div class="nombre">${item.nombre}</div>
+            <div class="detalle">$${item.precio.toFixed(2)} each</div>
+          </div>
+          <div class="reserva-cantidad">
+            <button onclick="cambiarCantidadCarrito('${item.id}', -1)">−</button>
+            <span>${item.cantidad}</span>
+            <button onclick="cambiarCantidadCarrito('${item.id}', 1)">+</button>
+          </div>
+          <div class="reserva-subtotal">$${subtotal.toFixed(2)}</div>
+        </div>
+      `;
+    }).join("");
+
+    html += `
+      <div class="reserva-total">
+        <span>Total</span>
+        <span>$${total.toFixed(2)}</span>
+      </div>
+      <a href="#" id="btnEnviarReserva" class="btn-reservar">📩 Send Reservation via WhatsApp</a>
+    `;
+
+    lista.innerHTML = html;
+
+    const mensaje = construirMensajeReserva(total);
+    document.getElementById("btnEnviarReserva").href = `https://wa.me/${WHATSAPP_RESERVAS}?text=${mensaje}`;
+    document.getElementById("btnEnviarReserva").target = "_blank";
+  }
+
+  function construirMensajeReserva(total) {
+    let texto = "Hello, I would like to make the following reservation:\n\n";
+    carrito.forEach(item => {
+      const subtotal = item.precio * item.cantidad;
+      texto += `- ${item.nombre} x${item.cantidad} = $${subtotal.toFixed(2)}\n`;
+    });
+    texto += `\nTotal: $${total.toFixed(2)}`;
+    return encodeURIComponent(texto);
+  }
+
   document.getElementById("modalOverlay").addEventListener("click", (e) => {
     if (e.target.id === "modalOverlay") cerrarModal();
   });
 
-  document.getElementById("buscador").addEventListener("input", renderGrid);
+  document.getElementById("buscador").addEventListener("input", () => {
+    if (vistaActiva === "products") renderGrid();
+  });
 
   async function cargarProductos() {
     try {
       const res = await fetch(FIRESTORE_URL);
       const data = await res.json();
       productos = (data.documents || []).map(parseFirestoreDoc);
-      renderGrid();
     } catch (e) {
-      document.getElementById("grid").innerHTML = '<div class="vacio">Error loading products. Please try again later.</div>';
       console.error(e);
     }
   }
