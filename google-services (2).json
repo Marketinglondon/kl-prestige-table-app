@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "51668253368",
+    "project_id": "kl-prestige-table",
+    "storage_bucket": "kl-prestige-table.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:51668253368:android:21da3b343d657182d9d24d",
+        "android_client_info": {
+          "package_name": "com.klprestigetable.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiYIDHD4PZ3QZyLlQF4_IScioH6crVzRI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
