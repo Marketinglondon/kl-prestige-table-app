@@ -3,16 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KL Prestige Table</title>
-<meta property="og:title" content="KL Prestige Table">
-<meta property="og:description" content="Where Elegance Begins - A refined selection for exceptional occasions.">
-<meta property="og:image" content="https://marketinglondon.github.io/kl-prestige-table-app/assets/icon/icone.png">
-<meta property="og:url" content="https://marketinglondon.github.io/kl-prestige-table-app/">
-<meta property="og:type" content="website">
+<title>KL Prestige Table — Admin</title>
 <style>
   :root {
     --dorado: #D4AF37;
-    --dorado-claro: #F1D77A;
     --negro: #0a0a0a;
     --negro-card: #161616;
   }
@@ -23,543 +17,208 @@
     font-family: 'Georgia', 'Times New Roman', serif;
     min-height: 100vh;
   }
-
-  #introScreen {
-    position: fixed;
-    inset: 0;
-    background: var(--negro);
-    z-index: 200;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 30px 20px;
+  .wrap {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  h1 {
+    color: var(--dorado);
     text-align: center;
-  }
-  #introScreen img {
-    width: 100%;
-    max-width: 280px;
-    margin-bottom: 30px;
-  }
-  #introScreen h1 {
-    color: var(--dorado);
-    font-size: 1.4em;
-    letter-spacing: 3px;
-    font-weight: normal;
-    margin-bottom: 8px;
-  }
-  #introScreen .subtitulo {
-    font-size: 0.95em;
-    letter-spacing: 3px;
-    color: var(--dorado-claro);
-    margin-bottom: 6px;
-    text-transform: uppercase;
-  }
-  #introScreen .descripcion {
-    font-size: 0.8em;
-    color: #888;
-    margin-bottom: 28px;
-  }
-  .btn-ingresar {
-    padding: 14px 40px;
-    background: var(--dorado);
-    color: #000;
-    border: none;
-    border-radius: 30px;
-    font-size: 0.95em;
-    font-weight: bold;
     letter-spacing: 2px;
-    cursor: pointer;
-    text-transform: uppercase;
+    font-size: 1.4em;
+    margin-bottom: 24px;
   }
-  #catalogo {
-    display: none;
-  }
-
-  header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 30px 20px 20px;
-    border-bottom: 1px solid #2a2a2a;
-  }
-  header img {
-    height: 90px;
-    margin-bottom: 10px;
-  }
-  header h1 {
-    color: var(--dorado);
-    font-size: 1.6em;
-    letter-spacing: 3px;
-    font-weight: normal;
-  }
-  .buscador {
-    max-width: 500px;
-    margin: 20px auto;
+  /* Login */
+  #loginScreen {
+    max-width: 340px;
+    margin: 80px auto;
+    text-align: center;
     padding: 0 20px;
   }
-  .buscador input {
+  #loginScreen input {
     width: 100%;
-    padding: 12px 16px;
-    border-radius: 30px;
-    border: 1px solid var(--dorado);
-    background: var(--negro-card);
-    color: #fff;
-    font-size: 1em;
-  }
-
-  .nav-botones-wrap {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 0 20px 20px;
-  }
-  .nav-botones {
-    display: flex;
-    justify-content: center;
-    gap: 36px;
-    border-bottom: 1px solid #2a2a2a;
-  }
-  .btn-nav {
-    background: none;
-    border: none;
-    color: #888;
-    font-family: 'Georgia', serif;
-    font-size: 0.85em;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    cursor: pointer;
-    padding: 12px 2px;
-    position: relative;
-    transition: color 0.2s;
-  }
-  .btn-nav:hover {
-    color: var(--dorado-claro);
-  }
-  .btn-nav.abierto {
-    color: var(--dorado);
-  }
-  .btn-nav.abierto::after {
-    content: "";
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--dorado);
-  }
-  .badge-carrito {
-    position: absolute;
-    top: 2px;
-    right: -14px;
-    background: var(--dorado);
-    color: #000;
-    font-size: 0.6em;
-    font-weight: bold;
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .home-contenido {
-    display: none;
-    padding: 24px 4px;
-    color: #ccc;
-    font-size: 0.95em;
-    line-height: 1.7;
-    text-align: center;
-  }
-  .home-contenido.abierto {
-    display: block;
-  }
-
-  .categorias {
-    display: none;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    padding: 20px 0 0;
-  }
-  .categorias.abierto {
-    display: flex;
-  }
-  .categoria-btn {
-    padding: 7px 16px;
-    border-radius: 20px;
-    border: 1px solid #444;
-    background: transparent;
-    color: #bbb;
-    font-size: 0.8em;
-    cursor: pointer;
-    white-space: nowrap;
-    letter-spacing: 1px;
-    transition: all 0.2s;
-  }
-  .categoria-btn.activa {
-    background: var(--dorado);
-    color: #000;
-    border-color: var(--dorado);
-    font-weight: bold;
-  }
-
-  .reserva-contenido {
-    display: none;
-    padding: 20px 4px;
-  }
-  .reserva-contenido.abierto {
-    display: block;
-  }
-  .reserva-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #2a2a2a;
-    gap: 10px;
-  }
-  .reserva-item:last-of-type {
-    border-bottom: none;
-  }
-  .reserva-info {
-    flex: 1;
-  }
-  .reserva-info .nombre {
-    color: #fff;
-    font-size: 0.95em;
-    margin-bottom: 4px;
-  }
-  .reserva-info .detalle {
-    color: #888;
-    font-size: 0.8em;
-  }
-  .reserva-cantidad {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .reserva-cantidad button {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    border: 1px solid var(--dorado);
-    background: transparent;
-    color: var(--dorado);
-    font-size: 1em;
-    cursor: pointer;
-  }
-  .reserva-subtotal {
-    color: var(--dorado);
-    font-weight: bold;
-    min-width: 65px;
-    text-align: right;
-  }
-  .reserva-vacio {
-    color: #777;
-    text-align: center;
-    padding: 20px 0;
-  }
-  .reserva-total {
-    display: flex;
-    justify-content: space-between;
-    padding: 16px 0;
-    margin-top: 8px;
-    border-top: 1px solid var(--dorado);
-    color: var(--dorado);
-    font-size: 1.1em;
-    font-weight: bold;
-  }
-  .btn-reservar {
-    width: 100%;
-    padding: 14px;
-    background: var(--dorado);
-    color: #000;
-    border: none;
-    border-radius: 30px;
-    font-size: 1em;
-    font-weight: bold;
-    letter-spacing: 1px;
-    cursor: pointer;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 14px;
-  }
-
-  .grid {
-    display: none;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 20px;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 10px 20px 60px;
-  }
-  .grid.abierto {
-    display: grid;
-  }
-  .card {
-    background: var(--negro-card);
-    border: 1px solid #2a2a2a;
-    border-radius: 12px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.2s, border-color 0.2s;
-  }
-  .card:hover {
-    transform: translateY(-4px);
-    border-color: var(--dorado);
-  }
-  .card img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-    display: block;
-    background: #000;
-  }
-  .card-info {
     padding: 14px 16px;
-  }
-  .card-info h3 {
-    color: #fff;
-    font-size: 1.05em;
-    font-weight: normal;
-    margin-bottom: 6px;
-  }
-  .card-info .categoria {
-    color: #888;
-    font-size: 0.75em;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .card-info .precio {
-    color: var(--dorado);
-    font-size: 1.2em;
-    font-weight: bold;
-  }
-  .vacio, .cargando {
-    text-align: center;
-    color: #777;
-    padding: 60px 20px;
-    grid-column: 1 / -1;
-  }
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    z-index: 100;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-  .modal-overlay.activo {
-    display: flex;
-  }
-  .modal {
+    border-radius: 30px;
+    border: 1px solid var(--dorado);
     background: var(--negro-card);
-    border: 1px solid var(--dorado);
-    border-radius: 14px;
-    max-width: 480px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-  }
-  .modal-cerrar {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: #000;
-    color: var(--dorado);
-    border: 1px solid var(--dorado);
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    font-size: 1.1em;
-    cursor: pointer;
-    z-index: 5;
-  }
-  .modal img {
-    width: 100%;
-    height: 280px;
-    object-fit: cover;
-  }
-  .modal-body {
-    padding: 20px;
-  }
-  .modal-body .categoria {
-    color: #888;
-    font-size: 0.75em;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .modal-body h2 {
     color: #fff;
-    font-weight: normal;
-    margin-bottom: 10px;
-  }
-  .modal-body p.descripcion {
-    color: #bbb;
-    font-size: 0.9em;
-    line-height: 1.5;
+    font-size: 1em;
     margin-bottom: 16px;
-  }
-  .modal-body .precio {
-    color: var(--dorado);
-    font-size: 1.5em;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  .modal-cantidad {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-  .modal-cantidad button {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: 1px solid var(--dorado);
-    background: transparent;
-    color: var(--dorado);
-    font-size: 1.2em;
-    cursor: pointer;
-  }
-  .modal-cantidad span {
-    color: #fff;
-    font-size: 1.1em;
-    min-width: 20px;
     text-align: center;
   }
-  .btn-agregar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+  #loginScreen button {
     width: 100%;
     padding: 14px;
     background: var(--dorado);
     color: #000;
     border: none;
     border-radius: 30px;
-    font-size: 1em;
     font-weight: bold;
     letter-spacing: 1px;
     cursor: pointer;
-    margin-bottom: 10px;
   }
-  .btn-whatsapp {
+  #loginError {
+    color: #e57373;
+    margin-top: 10px;
+    font-size: 0.85em;
+  }
+
+  #adminScreen { display: none; }
+
+  label {
+    display: block;
+    color: #aaa;
+    font-size: 0.8em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 16px 0 6px;
+  }
+  input[type="text"], input[type="number"], select, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: var(--negro-card);
+    color: #fff;
+    font-size: 1em;
+    font-family: inherit;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--dorado);
+  }
+  textarea { resize: vertical; min-height: 70px; }
+
+  input[type="file"] {
+    margin-top: 8px;
+    color: #ccc;
+  }
+
+  .preview-imgs {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-wrap: wrap;
     gap: 8px;
+    margin-top: 10px;
+  }
+  .preview-imgs img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #333;
+  }
+
+  .btn-publicar {
     width: 100%;
     padding: 14px;
-    background: transparent;
-    color: var(--dorado);
-    border: 1px solid var(--dorado);
+    margin-top: 22px;
+    background: var(--dorado);
+    color: #000;
+    border: none;
     border-radius: 30px;
-    font-size: 1em;
     font-weight: bold;
     letter-spacing: 1px;
     cursor: pointer;
-    text-decoration: none;
+    font-size: 1em;
   }
-  footer {
+  .btn-publicar:disabled {
+    opacity: 0.5;
+  }
+
+  #statusMsg {
+    margin-top: 14px;
     text-align: center;
-    padding: 30px 20px;
-    color: #555;
-    font-size: 0.8em;
+    font-size: 0.9em;
+  }
+  #statusMsg.ok { color: #81c784; }
+  #statusMsg.error { color: #e57373; }
+
+  .lista-productos {
+    margin-top: 40px;
     border-top: 1px solid #2a2a2a;
+    padding-top: 20px;
+  }
+  .lista-productos h2 {
+    color: var(--dorado);
+    font-size: 1.1em;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .item-producto {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #222;
+  }
+  .item-producto img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+    background: #222;
+  }
+  .item-producto .info { flex: 1; }
+  .item-producto .nombre { font-size: 0.95em; }
+  .item-producto .detalle { color: #888; font-size: 0.75em; }
+  .item-producto button {
+    background: none;
+    border: 1px solid #e57373;
+    color: #e57373;
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 0.8em;
   }
 </style>
 </head>
 <body>
 
-<div id="introScreen">
-  <img src="assets/icon/Logo.PNG" alt="KL Prestige Table">
-  <h1>KL PRESTIGE TABLE</h1>
-  <p class="subtitulo">Where Elegance Begins</p>
-  <p class="descripcion">A refined selection for exceptional occasions.</p>
-  <button class="btn-ingresar" onclick="ingresarCatalogo()">Discover the Collection</button>
+<div id="loginScreen">
+  <h1>KL PRESTIGE TABLE<br>ADMIN</h1>
+  <input type="text" id="passwordInput" placeholder="Enter password" autocomplete="off">
+  <button onclick="intentarLogin()">Enter</button>
+  <div id="loginError"></div>
 </div>
 
-<div id="catalogo">
+<div id="adminScreen">
+  <div class="wrap">
+    <h1>KL PRESTIGE TABLE — ADMIN</h1>
 
-<header>
-  <img src="assets/icon/Logo.PNG" alt="KL Prestige Table">
-  <h1>KL PRESTIGE TABLE</h1>
-</header>
+    <label>Product name</label>
+    <input type="text" id="nombre" placeholder="e.g. Round Gold Table">
 
-<div class="buscador">
-  <input type="text" id="buscador" placeholder="Search product...">
-</div>
+    <label>Category</label>
+    <select id="categoria"></select>
 
-<div class="nav-botones-wrap">
-  <div class="nav-botones">
-    <button class="btn-nav" id="btnHome" onclick="toggleVista('home')">Home</button>
-    <button class="btn-nav" id="btnProductos" onclick="toggleVista('products')">Products</button>
-    <button class="btn-nav" id="btnReserva" onclick="toggleVista('reserva')">
-      My Reservation
-      <span class="badge-carrito" id="badgeCarrito" style="display:none;">0</span>
-    </button>
-  </div>
+    <label>Price (£)</label>
+    <input type="number" id="precio" placeholder="0.00" step="0.01">
 
-  <div class="home-contenido" id="homeContenido">
-    Welcome to KL Prestige Table, your premier partner in elegant table service rental. We offer a comprehensive selection of high-quality knives, forks, plates, spoons, and cups, perfect for any event, large or small. Beyond simple rental, we offer the unique option of turning your vision into reality with our custom table design service, ensuring every detail reflects your personal style and creates an unforgettable dining experience.
-  </div>
+    <label>Description</label>
+    <textarea id="descripcion" placeholder="Optional description"></textarea>
 
-  <div class="categorias" id="categorias"></div>
+    <label>Photos</label>
+    <input type="file" id="fotos" accept="image/*" multiple>
+    <div class="preview-imgs" id="previewImgs"></div>
 
-  <div class="reserva-contenido" id="reservaContenido">
-    <div id="reservaLista"></div>
-  </div>
-</div>
+    <button class="btn-publicar" id="btnPublicar" onclick="publicarProducto()">Publish product</button>
+    <div id="statusMsg"></div>
 
-<div class="grid" id="grid">
-  <div class="cargando">Loading products...</div>
-</div>
-
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal">
-    <button class="modal-cerrar" onclick="cerrarModal()">✕</button>
-    <img id="modalImg" src="" alt="">
-    <div class="modal-body">
-      <div class="categoria" id="modalCategoria"></div>
-      <h2 id="modalNombre"></h2>
-      <p class="descripcion" id="modalDescripcion"></p>
-      <div class="precio" id="modalPrecio"></div>
-      <div class="modal-cantidad">
-        <button onclick="cambiarCantidadModal(-1)">−</button>
-        <span id="modalCantidad">1</span>
-        <button onclick="cambiarCantidadModal(1)">+</button>
-      </div>
-      <button class="btn-agregar" onclick="agregarAReserva()">Add to My Reservation</button>
-      <a href="#" id="modalWhatsapp" class="btn-whatsapp" target="_blank">
-        📩 Inquire via WhatsApp
-      </a>
+    <div class="lista-productos">
+      <h2>Existing products</h2>
+      <div id="listaProductos">Loading...</div>
     </div>
   </div>
 </div>
 
-<footer>
-  © KL Prestige Table — All rights reserved
-</footer>
-
-</div>
-
 <script>
+  const ADMIN_PASSWORD = "KLPrestige2026"; // cámbiala si quieres
   const FIREBASE_PROJECT_ID = "kl-prestige-table";
-  const FIRESTORE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/productos`;
-  const WHATSAPP_NUMERO = "447549679289";
-  const WHATSAPP_RESERVAS = "447549679289";
+  const FIRESTORE_BASE = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/productos`;
+  const CLOUDINARY_CLOUD_NAME = "iggcl810";
+  const CLOUDINARY_UPLOAD_PRESET = "klprestige_unsigned";
+  const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
 
   const CATEGORIAS_FIJAS = [
     "Tables",
@@ -572,246 +231,161 @@
     "Glassware"
   ];
 
-  let productos = [];
-  let categoriaActiva = CATEGORIAS_FIJAS[0];
-  let vistaActiva = null;
-  let productoModal = null;
-  let cantidadModal = 1;
-  let carrito = [];
+  let archivosSeleccionados = [];
 
-  function ingresarCatalogo() {
-    document.getElementById("introScreen").style.display = "none";
-    document.getElementById("catalogo").style.display = "block";
-  }
-
-  function toggleVista(vista) {
-    const home = document.getElementById("homeContenido");
-    const cats = document.getElementById("categorias");
-    const grid = document.getElementById("grid");
-    const reserva = document.getElementById("reservaContenido");
-    const btnHome = document.getElementById("btnHome");
-    const btnProd = document.getElementById("btnProductos");
-    const btnRes = document.getElementById("btnReserva");
-
-    if (vistaActiva === vista) {
-      vistaActiva = null;
+  function intentarLogin() {
+    const val = document.getElementById("passwordInput").value;
+    if (val === ADMIN_PASSWORD) {
+      document.getElementById("loginScreen").style.display = "none";
+      document.getElementById("adminScreen").style.display = "block";
+      iniciarAdmin();
     } else {
-      vistaActiva = vista;
-    }
-
-    home.classList.remove("abierto");
-    cats.classList.remove("abierto");
-    grid.classList.remove("abierto");
-    reserva.classList.remove("abierto");
-    btnHome.classList.remove("abierto");
-    btnProd.classList.remove("abierto");
-    btnRes.classList.remove("abierto");
-
-    if (vistaActiva === "home") {
-      home.classList.add("abierto");
-      btnHome.classList.add("abierto");
-    } else if (vistaActiva === "products") {
-      cats.classList.add("abierto");
-      grid.classList.add("abierto");
-      btnProd.classList.add("abierto");
-      renderGrid();
-    } else if (vistaActiva === "reserva") {
-      reserva.classList.add("abierto");
-      btnRes.classList.add("abierto");
-      renderReserva();
+      document.getElementById("loginError").textContent = "Incorrect password.";
     }
   }
 
-  function parseFirestoreDoc(doc) {
-    const f = doc.fields || {};
-    const getArray = (field) => {
-      if (!f[field] || !f[field].arrayValue || !f[field].arrayValue.values) return [];
-      return f[field].arrayValue.values.map(v => v.stringValue || "");
-    };
-    return {
-      id: doc.name.split("/").pop(),
-      nombre: f.nombre?.stringValue || "",
-      categoria: f.categoria?.stringValue || "",
-      precio: parseFloat(f.precio?.doubleValue ?? f.precio?.integerValue ?? 0),
-      descripcion: f.descripcion?.stringValue || "",
-      imagenes: getArray("imagenes"),
-    };
+  document.getElementById("passwordInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") intentarLogin();
+  });
+
+  function iniciarAdmin() {
+    const sel = document.getElementById("categoria");
+    sel.innerHTML = CATEGORIAS_FIJAS.map(c => `<option value="${c}">${c}</option>`).join("");
+    document.getElementById("fotos").addEventListener("change", manejarFotos);
+    cargarProductosExistentes();
   }
 
-  function renderCategorias() {
-    const cont = document.getElementById("categorias");
-    cont.innerHTML = CATEGORIAS_FIJAS.map(cat => `
-      <button class="categoria-btn ${cat === categoriaActiva ? 'activa' : ''}" onclick="filtrarCategoria('${cat}')">${cat}</button>
-    `).join("");
-  }
-
-  function filtrarCategoria(cat) {
-    categoriaActiva = cat;
-    renderCategorias();
-    renderGrid();
-  }
-
-  function renderGrid() {
-    const grid = document.getElementById("grid");
-    const busqueda = document.getElementById("buscador").value.toLowerCase();
-
-    let filtrados = productos.filter(p => p.categoria === categoriaActiva);
-    if (busqueda) {
-      filtrados = filtrados.filter(p => p.nombre.toLowerCase().includes(busqueda));
-    }
-
-    if (filtrados.length === 0) {
-      grid.innerHTML = '<div class="vacio">No products found</div>';
-      return;
-    }
-
-    grid.innerHTML = filtrados.map(p => `
-      <div class="card" onclick='abrirModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
-        <img src="${p.imagenes[0] || ''}" alt="${p.nombre}" onerror="this.style.opacity=0">
-        <div class="card-info">
-          <div class="categoria">${p.categoria}</div>
-          <h3>${p.nombre}</h3>
-          <div class="precio">£${p.precio.toFixed(2)}</div>
-        </div>
-      </div>
-    `).join("");
-  }
-
-  function abrirModal(p) {
-    productoModal = p;
-    cantidadModal = 1;
-    document.getElementById("modalCantidad").textContent = cantidadModal;
-    document.getElementById("modalImg").src = p.imagenes[0] || "";
-    document.getElementById("modalCategoria").textContent = p.categoria;
-    document.getElementById("modalNombre").textContent = p.nombre;
-    document.getElementById("modalDescripcion").textContent = p.descripcion;
-    document.getElementById("modalPrecio").textContent = "£" + p.precio.toFixed(2);
-    const mensaje = encodeURIComponent(`Hi, I'm interested in: ${p.nombre} (£${p.precio.toFixed(2)})`);
-    document.getElementById("modalWhatsapp").href = `https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}`;
-    document.getElementById("modalOverlay").classList.add("activo");
-  }
-
-  function cerrarModal() {
-    document.getElementById("modalOverlay").classList.remove("activo");
-  }
-
-  function cambiarCantidadModal(delta) {
-    cantidadModal = Math.max(1, cantidadModal + delta);
-    document.getElementById("modalCantidad").textContent = cantidadModal;
-  }
-
-  function agregarAReserva() {
-    if (!productoModal) return;
-    const existente = carrito.find(item => item.id === productoModal.id);
-    if (existente) {
-      existente.cantidad += cantidadModal;
-    } else {
-      carrito.push({
-        id: productoModal.id,
-        nombre: productoModal.nombre,
-        precio: productoModal.precio,
-        cantidad: cantidadModal
-      });
-    }
-    actualizarBadge();
-    cerrarModal();
-  }
-
-  function actualizarBadge() {
-    const badge = document.getElementById("badgeCarrito");
-    const totalItems = carrito.reduce((sum, item) => sum + item.cantidad, 0);
-    if (totalItems > 0) {
-      badge.style.display = "flex";
-      badge.textContent = totalItems;
-    } else {
-      badge.style.display = "none";
-    }
-  }
-
-  function cambiarCantidadCarrito(id, delta) {
-    const item = carrito.find(i => i.id === id);
-    if (!item) return;
-    item.cantidad += delta;
-    if (item.cantidad <= 0) {
-      carrito = carrito.filter(i => i.id !== id);
-    }
-    actualizarBadge();
-    renderReserva();
-  }
-
-  function renderReserva() {
-    const lista = document.getElementById("reservaLista");
-
-    if (carrito.length === 0) {
-      lista.innerHTML = '<div class="reserva-vacio">Your reservation is empty. Add products to get started.</div>';
-      return;
-    }
-
-    let total = 0;
-    let html = carrito.map(item => {
-      const subtotal = item.precio * item.cantidad;
-      total += subtotal;
-      return `
-        <div class="reserva-item">
-          <div class="reserva-info">
-            <div class="nombre">${item.nombre}</div>
-            <div class="detalle">£${item.precio.toFixed(2)} each</div>
-          </div>
-          <div class="reserva-cantidad">
-            <button onclick="cambiarCantidadCarrito('${item.id}', -1)">−</button>
-            <span>${item.cantidad}</span>
-            <button onclick="cambiarCantidadCarrito('${item.id}', 1)">+</button>
-          </div>
-          <div class="reserva-subtotal">£${subtotal.toFixed(2)}</div>
-        </div>
-      `;
-    }).join("");
-
-    html += `
-      <div class="reserva-total">
-        <span>Total</span>
-        <span>£${total.toFixed(2)}</span>
-      </div>
-      <a href="#" id="btnEnviarReserva" class="btn-reservar">📩 Send Reservation via WhatsApp</a>
-    `;
-
-    lista.innerHTML = html;
-
-    const mensaje = construirMensajeReserva(total);
-    document.getElementById("btnEnviarReserva").href = `https://wa.me/${WHATSAPP_RESERVAS}?text=${mensaje}`;
-    document.getElementById("btnEnviarReserva").target = "_blank";
-  }
-
-  function construirMensajeReserva(total) {
-    let texto = "Hello, I would like to make the following reservation:\n\n";
-    carrito.forEach(item => {
-      const subtotal = item.precio * item.cantidad;
-      texto += `- ${item.nombre} x${item.cantidad} = £${subtotal.toFixed(2)}\n`;
+  function manejarFotos(e) {
+    archivosSeleccionados = Array.from(e.target.files);
+    const cont = document.getElementById("previewImgs");
+    cont.innerHTML = "";
+    archivosSeleccionados.forEach(file => {
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(file);
+      cont.appendChild(img);
     });
-    texto += `\nTotal: £${total.toFixed(2)}`;
-    return encodeURIComponent(texto);
   }
 
-  document.getElementById("modalOverlay").addEventListener("click", (e) => {
-    if (e.target.id === "modalOverlay") cerrarModal();
-  });
+  async function subirImagenCloudinary(file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+    const res = await fetch(CLOUDINARY_URL, { method: "POST", body: formData });
+    const data = await res.json();
+    return data.secure_url;
+  }
 
-  document.getElementById("buscador").addEventListener("input", () => {
-    if (vistaActiva === "products") renderGrid();
-  });
+  function mostrarStatus(msg, tipo) {
+    const el = document.getElementById("statusMsg");
+    el.textContent = msg;
+    el.className = tipo;
+  }
 
-  async function cargarProductos() {
+  async function publicarProducto() {
+    const nombre = document.getElementById("nombre").value.trim();
+    const categoria = document.getElementById("categoria").value;
+    const precio = parseFloat(document.getElementById("precio").value);
+    const descripcion = document.getElementById("descripcion").value.trim();
+
+    if (!nombre || !precio || archivosSeleccionados.length === 0) {
+      mostrarStatus("Please fill in name, price, and at least one photo.", "error");
+      return;
+    }
+
+    const btn = document.getElementById("btnPublicar");
+    btn.disabled = true;
+    mostrarStatus("Uploading photos...", "");
+
     try {
-      const res = await fetch(FIRESTORE_URL);
-      const data = await res.json();
-      productos = (data.documents || []).map(parseFirestoreDoc);
+      const urls = [];
+      for (const file of archivosSeleccionados) {
+        const url = await subirImagenCloudinary(file);
+        if (url) urls.push(url);
+      }
+
+      mostrarStatus("Saving product...", "");
+
+      const body = {
+        fields: {
+          nombre: { stringValue: nombre },
+          categoria: { stringValue: categoria },
+          precio: { doubleValue: precio },
+          descripcion: { stringValue: descripcion },
+          imagenes: { arrayValue: { values: urls.map(u => ({ stringValue: u })) } },
+          fechaCreacion: { stringValue: new Date().toISOString() }
+        }
+      };
+
+      const res = await fetch(FIRESTORE_BASE, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+      if (!res.ok) throw new Error("Firestore error");
+
+      mostrarStatus("Product published successfully!", "ok");
+      document.getElementById("nombre").value = "";
+      document.getElementById("precio").value = "";
+      document.getElementById("descripcion").value = "";
+      document.getElementById("fotos").value = "";
+      document.getElementById("previewImgs").innerHTML = "";
+      archivosSeleccionados = [];
+      cargarProductosExistentes();
     } catch (e) {
+      mostrarStatus("Error publishing product. Please try again.", "error");
       console.error(e);
+    } finally {
+      btn.disabled = false;
     }
   }
 
-  renderCategorias();
-  cargarProductos();
+  async function cargarProductosExistentes() {
+    const cont = document.getElementById("listaProductos");
+    try {
+      const res = await fetch(FIRESTORE_BASE);
+      const data = await res.json();
+      const docs = data.documents || [];
+
+      if (docs.length === 0) {
+        cont.innerHTML = '<p style="color:#777;">No products yet.</p>';
+        return;
+      }
+
+      cont.innerHTML = docs.map(doc => {
+        const f = doc.fields || {};
+        const id = doc.name.split("/").pop();
+        const nombre = f.nombre?.stringValue || "";
+        const categoria = f.categoria?.stringValue || "";
+        const precio = parseFloat(f.precio?.doubleValue ?? f.precio?.integerValue ?? 0);
+        const imgs = f.imagenes?.arrayValue?.values || [];
+        const imgUrl = imgs.length > 0 ? imgs[0].stringValue : "";
+
+        return `
+          <div class="item-producto">
+            <img src="${imgUrl}" onerror="this.style.opacity=0">
+            <div class="info">
+              <div class="nombre">${nombre}</div>
+              <div class="detalle">${categoria} — £${precio.toFixed(2)}</div>
+            </div>
+            <button onclick="eliminarProducto('${id}')">Delete</button>
+          </div>
+        `;
+      }).join("");
+    } catch (e) {
+      cont.innerHTML = '<p style="color:#e57373;">Error loading products.</p>';
+    }
+  }
+
+  async function eliminarProducto(id) {
+    if (!confirm("Delete this product?")) return;
+    try {
+      await fetch(`${FIRESTORE_BASE}/${id}`, { method: "DELETE" });
+      cargarProductosExistentes();
+    } catch (e) {
+      alert("Error deleting product.");
+    }
+  }
 </script>
 
 </body>
