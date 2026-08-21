@@ -108,32 +108,54 @@
     font-size: 1em;
   }
 
-  .productos-toggle-wrap {
+  .nav-botones-wrap {
     max-width: 900px;
     margin: 0 auto;
     padding: 0 20px 20px;
   }
-  .btn-productos {
-    width: 100%;
+  .nav-botones {
+    display: flex;
+    gap: 10px;
+  }
+  .btn-nav {
+    flex: 1;
     padding: 14px 20px;
     background: var(--negro-card);
     color: var(--dorado);
     border: 1px solid var(--dorado);
     border-radius: 10px;
-    font-size: 1em;
+    font-size: 0.95em;
     letter-spacing: 2px;
     text-transform: uppercase;
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 8px;
   }
-  .btn-productos .flecha {
+  .btn-nav .flecha {
     transition: transform 0.2s;
+    font-size: 0.8em;
   }
-  .btn-productos.abierto .flecha {
+  .btn-nav.abierto .flecha {
     transform: rotate(180deg);
   }
+
+  .home-contenido {
+    display: none;
+    padding: 20px;
+    margin-top: 14px;
+    background: var(--negro-card);
+    border: 1px solid var(--dorado);
+    border-radius: 10px;
+    color: #ccc;
+    font-size: 0.95em;
+    line-height: 1.7;
+  }
+  .home-contenido.abierto {
+    display: block;
+  }
+
   .categorias {
     display: none;
     flex-wrap: wrap;
@@ -329,11 +351,22 @@
   <input type="text" id="buscador" placeholder="Search product...">
 </div>
 
-<div class="productos-toggle-wrap">
-  <button class="btn-productos" id="btnProductos" onclick="toggleProductos()">
-    <span>Products</span>
-    <span class="flecha">▼</span>
-  </button>
+<div class="nav-botones-wrap">
+  <div class="nav-botones">
+    <button class="btn-nav" id="btnHome" onclick="toggleHome()">
+      <span>Home</span>
+      <span class="flecha">▼</span>
+    </button>
+    <button class="btn-nav" id="btnProductos" onclick="toggleProductos()">
+      <span>Products</span>
+      <span class="flecha">▼</span>
+    </button>
+  </div>
+
+  <div class="home-contenido" id="homeContenido">
+    Welcome to KL Prestige Table, your premier partner in elegant table service rental. We offer a comprehensive selection of high-quality knives, forks, plates, spoons, and cups, perfect for any event, large or small. Beyond simple rental, we offer the unique option of turning your vision into reality with our custom table design service, ensuring every detail reflects your personal style and creates an unforgettable dining experience.
+  </div>
+
   <div class="categorias" id="categorias"></div>
 </div>
 
@@ -387,9 +420,18 @@
     document.getElementById("catalogo").style.display = "block";
   }
 
+  function toggleHome() {
+    document.getElementById("homeContenido").classList.toggle("abierto");
+    document.getElementById("btnHome").classList.toggle("abierto");
+    document.getElementById("categorias").classList.remove("abierto");
+    document.getElementById("btnProductos").classList.remove("abierto");
+  }
+
   function toggleProductos() {
     document.getElementById("categorias").classList.toggle("abierto");
     document.getElementById("btnProductos").classList.toggle("abierto");
+    document.getElementById("homeContenido").classList.remove("abierto");
+    document.getElementById("btnHome").classList.remove("abierto");
   }
 
   function parseFirestoreDoc(doc) {
