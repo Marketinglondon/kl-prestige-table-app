@@ -20,7 +20,7 @@ jobs:
           channel: 'stable'
 
       - name: Create Flutter project structure
-        run: flutter create --platforms=android --org com.klprestigetable --project-name kl_prestige_table .
+        run: flutter create --platforms=android --org com.klprestigetable --project-name app .
 
       - name: Copy google-services.json
         run: cp firebase-config/google-services.json android/app/google-services.json
