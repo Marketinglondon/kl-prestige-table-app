@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -95,12 +95,6 @@
     font-size: 1.6em;
     letter-spacing: 3px;
     font-weight: normal;
-  }
-  header p {
-    color: #999;
-    font-size: 0.85em;
-    letter-spacing: 2px;
-    margin-top: 4px;
   }
   .buscador {
     max-width: 500px;
@@ -305,17 +299,16 @@
 <header>
   <img src="assets/icon/Logo.PNG" alt="KL Prestige Table">
   <h1>KL PRESTIGE TABLE</h1>
-  <p>Catálogo de Mesas y Elegancia</p>
 </header>
 
 <div class="buscador">
-  <input type="text" id="buscador" placeholder="Buscar producto...">
+  <input type="text" id="buscador" placeholder="Search product...">
 </div>
 
 <div class="categorias" id="categorias"></div>
 
 <div class="grid" id="grid">
-  <div class="cargando">Cargando productos...</div>
+  <div class="cargando">Loading products...</div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay">
@@ -328,14 +321,14 @@
       <p class="descripcion" id="modalDescripcion"></p>
       <div class="precio" id="modalPrecio"></div>
       <a href="#" id="modalWhatsapp" class="btn-whatsapp" target="_blank">
-        📩 Consultar por WhatsApp
+        📩 Inquire via WhatsApp
       </a>
     </div>
   </div>
 </div>
 
 <footer>
-  © KL Prestige Table — Todos los derechos reservados
+  © KL Prestige Table — All rights reserved
 </footer>
 
 </div>
@@ -346,18 +339,18 @@
   const WHATSAPP_NUMERO = "50000000000";
 
   const CATEGORIAS_FIJAS = [
-    "Mesas",
-    "Sillas",
-    "Manteles",
-    "Centros de Mesa",
-    "Iluminación",
-    "Decoración",
-    "Vajilla",
-    "Cristalería"
+    "Tables",
+    "Chairs",
+    "Tablecloths",
+    "Centerpieces",
+    "Lighting",
+    "Decoration",
+    "Tableware",
+    "Glassware"
   ];
 
   let productos = [];
-  let categoriaActiva = "Todas";
+  let categoriaActiva = CATEGORIAS_FIJAS[0];
 
   function ingresarCatalogo() {
     document.getElementById("introScreen").style.display = "none";
@@ -382,8 +375,7 @@
 
   function renderCategorias() {
     const cont = document.getElementById("categorias");
-    const todas = ["Todas", ...CATEGORIAS_FIJAS];
-    cont.innerHTML = todas.map(cat => `
+    cont.innerHTML = CATEGORIAS_FIJAS.map(cat => `
       <button class="categoria-btn ${cat === categoriaActiva ? 'activa' : ''}" onclick="filtrarCategoria('${cat}')">${cat}</button>
     `).join("");
   }
@@ -398,16 +390,13 @@
     const grid = document.getElementById("grid");
     const busqueda = document.getElementById("buscador").value.toLowerCase();
 
-    let filtrados = productos;
-    if (categoriaActiva !== "Todas") {
-      filtrados = filtrados.filter(p => p.categoria === categoriaActiva);
-    }
+    let filtrados = productos.filter(p => p.categoria === categoriaActiva);
     if (busqueda) {
       filtrados = filtrados.filter(p => p.nombre.toLowerCase().includes(busqueda));
     }
 
     if (filtrados.length === 0) {
-      grid.innerHTML = '<div class="vacio">No se encontraron productos</div>';
+      grid.innerHTML = '<div class="vacio">No products found</div>';
       return;
     }
 
@@ -429,7 +418,7 @@
     document.getElementById("modalNombre").textContent = p.nombre;
     document.getElementById("modalDescripcion").textContent = p.descripcion;
     document.getElementById("modalPrecio").textContent = "$" + p.precio.toFixed(2);
-    const mensaje = encodeURIComponent(`Hola, me interesa el producto: ${p.nombre} ($${p.precio.toFixed(2)})`);
+    const mensaje = encodeURIComponent(`Hi, I'm interested in: ${p.nombre} ($${p.precio.toFixed(2)})`);
     document.getElementById("modalWhatsapp").href = `https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}`;
     document.getElementById("modalOverlay").classList.add("activo");
   }
@@ -451,7 +440,7 @@
       productos = (data.documents || []).map(parseFirestoreDoc);
       renderGrid();
     } catch (e) {
-      document.getElementById("grid").innerHTML = '<div class="vacio">Error al cargar productos. Intenta de nuevo más tarde.</div>';
+      document.getElementById("grid").innerHTML = '<div class="vacio">Error loading products. Please try again later.</div>';
       console.error(e);
     }
   }
