@@ -18,6 +18,56 @@
     font-family: 'Georgia', 'Times New Roman', serif;
     min-height: 100vh;
   }
+
+  /* Pantalla de bienvenida */
+  #introScreen {
+    position: fixed;
+    inset: 0;
+    background: var(--negro);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    text-align: center;
+  }
+  #introScreen video {
+    width: 100%;
+    max-width: 420px;
+    border-radius: 14px;
+    border: 1px solid var(--dorado);
+    margin-bottom: 30px;
+  }
+  #introScreen h1 {
+    color: var(--dorado);
+    font-size: 1.4em;
+    letter-spacing: 3px;
+    font-weight: normal;
+    margin-bottom: 8px;
+  }
+  #introScreen p {
+    color: #999;
+    font-size: 0.85em;
+    letter-spacing: 1px;
+    margin-bottom: 28px;
+  }
+  .btn-ingresar {
+    padding: 14px 50px;
+    background: var(--dorado);
+    color: #000;
+    border: none;
+    border-radius: 30px;
+    font-size: 1em;
+    font-weight: bold;
+    letter-spacing: 2px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  #catalogo {
+    display: none;
+  }
+
   header {
     display: flex;
     flex-direction: column;
@@ -232,6 +282,15 @@
 </head>
 <body>
 
+<div id="introScreen">
+  <video src="assets/video/intro.mp4" autoplay muted loop playsinline></video>
+  <h1>KL PRESTIGE TABLE</h1>
+  <p>Catálogo de Mesas y Elegancia</p>
+  <button class="btn-ingresar" onclick="ingresarCatalogo()">Ingresar</button>
+</div>
+
+<div id="catalogo">
+
 <header>
   <img src="assets/icon/Logo.PNG" alt="KL Prestige Table">
   <h1>KL PRESTIGE TABLE</h1>
@@ -268,6 +327,8 @@
   © KL Prestige Table — Todos los derechos reservados
 </footer>
 
+</div>
+
 <script>
   const FIREBASE_PROJECT_ID = "kl-prestige-table";
   const FIRESTORE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/productos`;
@@ -286,6 +347,11 @@
 
   let productos = [];
   let categoriaActiva = "Todas";
+
+  function ingresarCatalogo() {
+    document.getElementById("introScreen").style.display = "none";
+    document.getElementById("catalogo").style.display = "block";
+  }
 
   function parseFirestoreDoc(doc) {
     const f = doc.fields || {};
