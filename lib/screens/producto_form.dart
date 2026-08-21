@@ -15,6 +15,7 @@ class ProductoFormScreen extends StatefulWidget {
 }
 
 class _ProductoFormScreenState extends State<ProductoFormScreen> {
+  static const dorado = Color(0xFFD4AF37);
   final _formKey = GlobalKey<FormState>();
   final _nombreCtrl = TextEditingController();
   final _precioCtrl = TextEditingController();
@@ -51,7 +52,7 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
     if (!_formKey.currentState!.validate()) return;
     if (_imagenesExistentes.isEmpty && _imagenesNuevas.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Agrega al menos una foto')),
+        const SnackBar(content: Text('Add at least one photo')),
       );
       return;
     }
@@ -86,7 +87,7 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error al guardar: $e')),
+          SnackBar(content: Text('Error saving: $e')),
         );
       }
     } finally {
@@ -99,9 +100,7 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
     final esEdicion = widget.producto != null;
     return Scaffold(
       appBar: AppBar(
-        title: Text(esEdicion ? 'Editar producto' : 'Nuevo producto'),
-        backgroundColor: const Color(0xFFD4AF37),
-        foregroundColor: Colors.black,
+        title: Text(esEdicion ? 'Edit product' : 'New product'),
       ),
       body: Form(
         key: _formKey,
@@ -110,13 +109,16 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
           children: [
             TextFormField(
               controller: _nombreCtrl,
-              decoration: const InputDecoration(labelText: 'Nombre del producto'),
-              validator: (v) => (v == null || v.trim().isEmpty) ? 'Requerido' : null,
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(labelText: 'Product name'),
+              validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
               value: _categoria,
-              decoration: const InputDecoration(labelText: 'Categoría'),
+              dropdownColor: const Color(0xFF161616),
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(labelText: 'Category'),
               items: AppConfig.categorias
                   .map((c) => DropdownMenuItem(value: c, child: Text(c)))
                   .toList(),
@@ -125,21 +127,27 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
             const SizedBox(height: 12),
             TextFormField(
               controller: _precioCtrl,
-              decoration: const InputDecoration(labelText: 'Precio'),
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(labelText: 'Price'),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              validator: (v) => (v == null || v.trim().isEmpty) ? 'Requerido' : null,
+              validator: (v) => (v == null || v.trim().isEmpty) ? 'Required' : null,
             ),
             const SizedBox(height: 12),
             TextFormField(
               controller: _descripcionCtrl,
-              decoration: const InputDecoration(labelText: 'Descripción'),
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(labelText: 'Description'),
               maxLines: 3,
             ),
             const SizedBox(height: 20),
             OutlinedButton.icon(
+              style: OutlinedButton.styleFrom(
+                foregroundColor: dorado,
+                side: const BorderSide(color: dorado),
+              ),
               onPressed: _elegirImagenes,
               icon: const Icon(Icons.add_photo_alternate_outlined),
-              label: const Text('Agregar fotos'),
+              label: const Text('Add photos'),
             ),
             const SizedBox(height: 12),
             Wrap(
@@ -190,17 +198,15 @@ class _ProductoFormScreenState extends State<ProductoFormScreen> {
             ElevatedButton(
               onPressed: _guardando ? null : _guardar,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFD4AF37),
-                foregroundColor: Colors.black,
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
               child: _guardando
                   ? const SizedBox(
                       height: 20,
                       width: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
                     )
-                  : Text(esEdicion ? 'Guardar cambios' : 'Publicar producto'),
+                  : Text(esEdicion ? 'Save changes' : 'Publish product'),
             ),
           ],
         ),
