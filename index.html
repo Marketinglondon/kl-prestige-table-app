@@ -107,16 +107,43 @@
     color: #fff;
     font-size: 1em;
   }
-  .categorias {
-    display: flex;
-    overflow-x: auto;
-    gap: 10px;
-    padding: 10px 20px 20px;
+
+  .productos-toggle-wrap {
     max-width: 900px;
     margin: 0 auto;
+    padding: 0 20px 20px;
+  }
+  .btn-productos {
+    width: 100%;
+    padding: 14px 20px;
+    background: var(--negro-card);
+    color: var(--dorado);
+    border: 1px solid var(--dorado);
+    border-radius: 10px;
+    font-size: 1em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .btn-productos .flecha {
+    transition: transform 0.2s;
+  }
+  .btn-productos.abierto .flecha {
+    transform: rotate(180deg);
+  }
+  .categorias {
+    display: none;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 0 0;
+  }
+  .categorias.abierto {
+    display: flex;
   }
   .categoria-btn {
-    flex-shrink: 0;
     padding: 8px 18px;
     border-radius: 20px;
     border: 1px solid var(--dorado);
@@ -302,7 +329,13 @@
   <input type="text" id="buscador" placeholder="Search product...">
 </div>
 
-<div class="categorias" id="categorias"></div>
+<div class="productos-toggle-wrap">
+  <button class="btn-productos" id="btnProductos" onclick="toggleProductos()">
+    <span>Products</span>
+    <span class="flecha">▼</span>
+  </button>
+  <div class="categorias" id="categorias"></div>
+</div>
 
 <div class="grid" id="grid">
   <div class="cargando">Loading products...</div>
@@ -354,6 +387,11 @@
     document.getElementById("catalogo").style.display = "block";
   }
 
+  function toggleProductos() {
+    document.getElementById("categorias").classList.toggle("abierto");
+    document.getElementById("btnProductos").classList.toggle("abierto");
+  }
+
   function parseFirestoreDoc(doc) {
     const f = doc.fields || {};
     const getArray = (field) => {
@@ -381,6 +419,8 @@
     categoriaActiva = cat;
     renderCategorias();
     renderGrid();
+    document.getElementById("categorias").classList.remove("abierto");
+    document.getElementById("btnProductos").classList.remove("abierto");
   }
 
   function renderGrid() {
