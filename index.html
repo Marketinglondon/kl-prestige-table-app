@@ -558,7 +558,7 @@
 <script>
   const FIREBASE_PROJECT_ID = "kl-prestige-table";
   const FIRESTORE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/productos`;
-  const WHATSAPP_NUMERO = "50000000000";
+  const WHATSAPP_NUMERO = "447549679289";
   const WHATSAPP_RESERVAS = "447549679289";
 
   const CATEGORIAS_FIJAS = [
@@ -671,7 +671,7 @@
         <div class="card-info">
           <div class="categoria">${p.categoria}</div>
           <h3>${p.nombre}</h3>
-          <div class="precio">$${p.precio.toFixed(2)}</div>
+          <div class="precio">£${p.precio.toFixed(2)}</div>
         </div>
       </div>
     `).join("");
@@ -685,8 +685,8 @@
     document.getElementById("modalCategoria").textContent = p.categoria;
     document.getElementById("modalNombre").textContent = p.nombre;
     document.getElementById("modalDescripcion").textContent = p.descripcion;
-    document.getElementById("modalPrecio").textContent = "$" + p.precio.toFixed(2);
-    const mensaje = encodeURIComponent(`Hi, I'm interested in: ${p.nombre} ($${p.precio.toFixed(2)})`);
+    document.getElementById("modalPrecio").textContent = "£" + p.precio.toFixed(2);
+    const mensaje = encodeURIComponent(`Hi, I'm interested in: ${p.nombre} (£${p.precio.toFixed(2)})`);
     document.getElementById("modalWhatsapp").href = `https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}`;
     document.getElementById("modalOverlay").classList.add("activo");
   }
@@ -755,14 +755,14 @@
         <div class="reserva-item">
           <div class="reserva-info">
             <div class="nombre">${item.nombre}</div>
-            <div class="detalle">$${item.precio.toFixed(2)} each</div>
+            <div class="detalle">£${item.precio.toFixed(2)} each</div>
           </div>
           <div class="reserva-cantidad">
             <button onclick="cambiarCantidadCarrito('${item.id}', -1)">−</button>
             <span>${item.cantidad}</span>
             <button onclick="cambiarCantidadCarrito('${item.id}', 1)">+</button>
           </div>
-          <div class="reserva-subtotal">$${subtotal.toFixed(2)}</div>
+          <div class="reserva-subtotal">£${subtotal.toFixed(2)}</div>
         </div>
       `;
     }).join("");
@@ -770,7 +770,7 @@
     html += `
       <div class="reserva-total">
         <span>Total</span>
-        <span>$${total.toFixed(2)}</span>
+        <span>£${total.toFixed(2)}</span>
       </div>
       <a href="#" id="btnEnviarReserva" class="btn-reservar">📩 Send Reservation via WhatsApp</a>
     `;
@@ -786,9 +786,9 @@
     let texto = "Hello, I would like to make the following reservation:\n\n";
     carrito.forEach(item => {
       const subtotal = item.precio * item.cantidad;
-      texto += `- ${item.nombre} x${item.cantidad} = $${subtotal.toFixed(2)}\n`;
+      texto += `- ${item.nombre} x${item.cantidad} = £${subtotal.toFixed(2)}\n`;
     });
-    texto += `\nTotal: $${total.toFixed(2)}`;
+    texto += `\nTotal: £${total.toFixed(2)}`;
     return encodeURIComponent(texto);
   }
 
