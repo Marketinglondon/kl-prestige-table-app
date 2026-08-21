@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KL Prestige Table</title>
+<style>
+  :root {
+    --dorado: #D4AF37;
+    --dorado-claro: #F1D77A;
+    --negro: #0a0a0a;
+    --negro-card: #161616;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--negro);
+    color: #fff;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    min-height: 100vh;
+  }
+  header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px 20px;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  header img {
+    height: 90px;
+    margin-bottom: 10px;
+  }
+  header h1 {
+    color: var(--dorado);
+    font-size: 1.6em;
+    letter-spacing: 3px;
+    font-weight: normal;
+  }
+  header p {
+    color: #999;
+    font-size: 0.85em;
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+  .buscador {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 0 20px;
+  }
+  .buscador input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 30px;
+    border: 1px solid var(--dorado);
+    background: var(--negro-card);
+    color: #fff;
+    font-size: 1em;
+  }
+  .categorias {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px 20px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .categoria-btn {
+    flex-shrink: 0;
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: 1px solid var(--dorado);
+    background: transparent;
+    color: var(--dorado);
+    font-size: 0.85em;
+    cursor: pointer;
+    white-space: nowrap;
+    letter-spacing: 1px;
+  }
+  .categoria-btn.activa {
+    background: var(--dorado);
+    color: #000;
+    font-weight: bold;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 10px 20px 60px;
+  }
+  .card {
+    background: var(--negro-card);
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--dorado);
+  }
+  .card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    background: #000;
+  }
+  .card-info {
+    padding: 14px 16px;
+  }
+  .card-info h3 {
+    color: #fff;
+    font-size: 1.05em;
+    font-weight: normal;
+    margin-bottom: 6px;
+  }
+  .card-info .categoria {
+    color: #888;
+    font-size: 0.75em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .card-info .precio {
+    color: var(--dorado);
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  .vacio, .cargando {
+    text-align: center;
+    color: #777;
+    padding: 60px 20px;
+    grid-column: 1 / -1;
+  }
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.activo {
+    display: flex;
+  }
+  .modal {
+    background: var(--negro-card);
+    border: 1px solid var(--dorado);
+    border-radius: 14px;
+    max-width: 480px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  .modal-cerrar {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #000;
+    color: var(--dorado);
+    border: 1px solid var(--dorado);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 1.1em;
+    cursor: pointer;
+    z-index: 5;
+  }
+  .modal img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+  }
+  .modal-body {
+    padding: 20px;
+  }
+  .modal-body .categoria {
+    color: #888;
+    font-size: 0.75em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .modal-body h2 {
+    color: #fff;
+    font-weight: normal;
+    margin-bottom: 10px;
+  }
+  .modal-body p.descripcion {
+    color: #bbb;
+    font-size: 0.9em;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .modal-body .precio {
+    color: var(--dorado);
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  .btn-whatsapp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px;
+    background: var(--dorado);
+    color: #000;
+    border: none;
+    border-radius: 30px;
+    font-size: 1em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: #555;
+    font-size: 0.8em;
+    border-top: 1px solid #2a2a2a;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="assets/icon/Logo.png" alt="KL Prestige Table">
+  <h1>KL PRESTIGE TABLE</h1>
+  <p>Catálogo de Mesas y Elegancia</p>
+</header>
+
+<div class="buscador">
+  <input type="text" id="buscador" placeholder="Buscar producto...">
+</div>
+
+<div class="categorias" id="categorias"></div>
+
+<div class="grid" id="grid">
+  <div class="cargando">Cargando productos...</div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-cerrar" onclick="cerrarModal()">✕</button>
+    <img id="modalImg" src="" alt="">
+    <div class="modal-body">
+      <div class="categoria" id="modalCategoria"></div>
+      <h2 id="modalNombre"></h2>
+      <p class="descripcion" id="modalDescripcion"></p>
+      <div class="precio" id="modalPrecio"></div>
+      <a href="#" id="modalWhatsapp" class="btn-whatsapp" target="_blank">
+        📩 Consultar por WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  © KL Prestige Table — Todos los derechos reservados
+</footer>
+
+<script>
+  const FIREBASE_PROJECT_ID = "kl-prestige-table";
+  const FIRESTORE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents/productos`;
+  const WHATSAPP_NUMERO = "50000000000"; // reemplazar por el número real
+
+  const CATEGORIAS_FIJAS = [
+    "Mesas",
+    "Sillas",
+    "Manteles",
+    "Centros de Mesa",
+    "Iluminación",
+    "Decoración",
+    "Vajilla",
+    "Cristalería"
+  ];
+
+  let productos = [];
+  let categoriaActiva = "Todas";
+
+  function parseFirestoreDoc(doc) {
+    const f = doc.fields || {};
+    const getArray = (field) => {
+      if (!f[field] || !f[field].arrayValue || !f[field].arrayValue.values) return [];
+      return f[field].arrayValue.values.map(v => v.stringValue || "");
+    };
+    return {
+      id: doc.name.split("/").pop(),
+      nombre: f.nombre?.stringValue || "",
+      categoria: f.categoria?.stringValue || "",
+      precio: parseFloat(f.precio?.doubleValue ?? f.precio?.integerValue ?? 0),
+      descripcion: f.descripcion?.stringValue || "",
+      imagenes: getArray("imagenes"),
+    };
+  }
+
+  function renderCategorias() {
+    const cont = document.getElementById("categorias");
+    const todas = ["Todas", ...CATEGORIAS_FIJAS];
+    cont.innerHTML = todas.map(cat => `
+      <button class="categoria-btn ${cat === categoriaActiva ? 'activa' : ''}" onclick="filtrarCategoria('${cat}')">${cat}</button>
+    `).join("");
+  }
+
+  function filtrarCategoria(cat) {
+    categoriaActiva = cat;
+    renderCategorias();
+    renderGrid();
+  }
+
+  function renderGrid() {
+    const grid = document.getElementById("grid");
+    const busqueda = document.getElementById("buscador").value.toLowerCase();
+
+    let filtrados = productos;
+    if (categoriaActiva !== "Todas") {
+      filtrados = filtrados.filter(p => p.categoria === categoriaActiva);
+    }
+    if (busqueda) {
+      filtrados = filtrados.filter(p => p.nombre.toLowerCase().includes(busqueda));
+    }
+
+    if (filtrados.length === 0) {
+      grid.innerHTML = '<div class="vacio">No se encontraron productos</div>';
+      return;
+    }
+
+    grid.innerHTML = filtrados.map(p => `
+      <div class="card" onclick='abrirModal(${JSON.stringify(p).replace(/'/g, "&#39;")})'>
+        <img src="${p.imagenes[0] || ''}" alt="${p.nombre}" onerror="this.style.opacity=0">
+        <div class="card-info">
+          <div class="categoria">${p.categoria}</div>
+          <h3>${p.nombre}</h3>
+          <div class="precio">$${p.precio.toFixed(2)}</div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function abrirModal(p) {
+    document.getElementById("modalImg").src = p.imagenes[0] || "";
+    document.getElementById("modalCategoria").textContent = p.categoria;
+    document.getElementById("modalNombre").textContent = p.nombre;
+    document.getElementById("modalDescripcion").textContent = p.descripcion;
+    document.getElementById("modalPrecio").textContent = "$" + p.precio.toFixed(2);
+    const mensaje = encodeURIComponent(`Hola, me interesa el producto: ${p.nombre} ($${p.precio.toFixed(2)})`);
+    document.getElementById("modalWhatsapp").href = `https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}`;
+    document.getElementById("modalOverlay").classList.add("activo");
+  }
+
+  function cerrarModal() {
+    document.getElementById("modalOverlay").classList.remove("activo");
+  }
+
+  document.getElementById("modalOverlay").addEventListener("click", (e) => {
+    if (e.target.id === "modalOverlay") cerrarModal();
+  });
+
+  document.getElementById("buscador").addEventListener("input", renderGrid);
+
+  async function cargarProductos() {
+    try {
+      const res = await fetch(FIRESTORE_URL);
+      const data = await res.json();
+      productos = (data.documents || []).map(parseFirestoreDoc);
+      renderGrid();
+    } catch (e) {
+      document.getElementById("grid").innerHTML = '<div class="vacio">Error al cargar productos. Intenta de nuevo más tarde.</div>';
+      console.error(e);
+    }
+  }
+
+  renderCategorias();
+  cargarProductos();
+</script>
+
+</body>
+</html>
