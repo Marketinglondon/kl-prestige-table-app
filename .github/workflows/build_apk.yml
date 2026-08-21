@@ -29,6 +29,14 @@ jobs:
         run: |
           sed -i '/id "org.jetbrains.kotlin.android" version/a\    id "com.google.gms.google-services" version "4.4.0" apply false' android/settings.gradle
 
+      - name: Update Kotlin version
+        run: |
+          sed -i 's/id "org.jetbrains.kotlin.android" version "[^"]*"/id "org.jetbrains.kotlin.android" version "1.9.24"/' android/settings.gradle
+
+      - name: Update compileSdk to 35
+        run: |
+          sed -i 's/flutter.compileSdkVersion/35/' android/app/build.gradle
+
       - name: Apply google-services plugin in app build.gradle
         run: |
           sed -i '/id "kotlin-android"/a\    id "com.google.gms.google-services"' android/app/build.gradle
