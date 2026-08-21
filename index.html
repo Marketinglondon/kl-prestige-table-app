@@ -37,6 +37,7 @@
     border-radius: 14px;
     border: 1px solid var(--dorado);
     margin-bottom: 30px;
+    cursor: pointer;
   }
   #introScreen h1 {
     color: var(--dorado);
@@ -287,7 +288,7 @@
 <body>
 
 <div id="introScreen">
-  <video src="assets/video/intro.mp4" autoplay muted loop playsinline></video>
+  <video id="videoIntro" src="assets/video/intro.mp4" autoplay muted loop playsinline webkit-playsinline></video>
   <h1>KL PRESTIGE TABLE</h1>
   <p class="subtitulo">Where Elegance Begins</p>
   <p class="descripcion">A refined selection for exceptional occasions.</p>
@@ -448,6 +449,13 @@
       document.getElementById("grid").innerHTML = '<div class="vacio">Error al cargar productos. Intenta de nuevo más tarde.</div>';
       console.error(e);
     }
+  }
+
+  const vid = document.getElementById("videoIntro");
+  if (vid) {
+    vid.play().catch(() => {
+      vid.addEventListener("click", () => vid.play());
+    });
   }
 
   renderCategorias();
