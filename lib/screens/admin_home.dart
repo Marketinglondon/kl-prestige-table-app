@@ -13,27 +13,25 @@ class AdminHomeScreen extends StatefulWidget {
 
 class _AdminHomeScreenState extends State<AdminHomeScreen> {
   String _busqueda = '';
-  String _categoriaFiltro = 'Todas';
+  String _categoriaFiltro = 'All';
+  static const dorado = Color(0xFFD4AF37);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppConfig.appName),
-        backgroundColor: const Color(0xFFD4AF37),
-        foregroundColor: Colors.black,
       ),
       body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Buscar producto...',
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+              style: const TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                hintText: 'Search product...',
+                hintStyle: TextStyle(color: Colors.grey),
+                prefixIcon: Icon(Icons.search, color: dorado),
               ),
               onChanged: (value) => setState(() => _busqueda = value.toLowerCase()),
             ),
@@ -44,7 +42,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 8),
               children: [
-                _chipCategoria('Todas'),
+                _chipCategoria('All'),
                 ...AppConfig.categorias.map((c) => _chipCategoria(c)),
               ],
             ),
@@ -55,14 +53,18 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
               stream: FirestoreService.obtenerProductos(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                    child: CircularProgressIndicator(color: dorado),
+                  );
                 }
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('No hay productos todavía'));
+                  return const Center(
+                    child: Text('No products yet', style: TextStyle(color: Colors.grey)),
+                  );
                 }
 
                 var productos = snapshot.data!;
-                if (_categoriaFiltro != 'Todas') {
+                if (_categoriaFiltro != 'All') {
                   productos = productos
                       .where((p) => p.categoria == _categoriaFiltro)
                       .toList();
@@ -74,7 +76,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                 }
 
                 if (productos.isEmpty) {
-                  return const Center(child: Text('Sin resultados'));
+                  return const Center(
+                    child: Text('No results', style: TextStyle(color: Colors.grey)),
+                  );
                 }
 
                 return ListView.builder(
@@ -95,10 +99,12 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : const Icon(Icons.table_bar, size: 40),
-                        title: Text(producto.nombre),
+                            : const Icon(Icons.table_bar, size: 40, color: dorado),
+                        title: Text(producto.nombre, style: const TextStyle(color: Colors.white)),
                         subtitle: Text(
-                            '${producto.categoria} • \$${producto.precio.toStringAsFixed(2)}'),
+                          '${producto.categoria} • \$${producto.precio.toStringAsFixed(2)}',
+                          style: const TextStyle(color: Colors.grey),
+                        ),
                         trailing: IconButton(
                           icon: const Icon(Icons.delete_outline, color: Colors.red),
                           onPressed: () => _confirmarEliminar(producto),
@@ -119,8 +125,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xFFD4AF37),
-        child: const Icon(Icons.add, color: Colors.black),
+        child: const Icon(Icons.add),
         onPressed: () {
           Navigator.push(
             context,
@@ -139,7 +144,10 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
         label: Text(categoria),
         selected: seleccionada,
         onSelected: (_) => setState(() => _categoriaFiltro = categoria),
-        selectedColor: const Color(0xFFD4AF37),
+        selectedColor: dorado,
+        backgroundColor: const Color(0xFF161616),
+        labelStyle: TextStyle(color: seleccionada ? Colors.black : dorado),
+        side: const BorderSide(color: dorado),
       ),
     );
   }
@@ -148,19 +156,23 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Eliminar producto'),
-        content: Text('¿Seguro que quieres eliminar "${producto.nombre}"?'),
+        backgroundColor: const Color(0xFF161616),
+        title: const Text('Delete product', style: TextStyle(color: Colors.white)),
+        content: Text(
+          'Are you sure you want to delete "${producto.nombre}"?',
+          style: const TextStyle(color: Colors.grey),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancelar'),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
               FirestoreService.eliminarProducto(producto.id!);
               Navigator.pop(context);
             },
-            child: const Text('Eliminar', style: TextStyle(color: Colors.red)),
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
