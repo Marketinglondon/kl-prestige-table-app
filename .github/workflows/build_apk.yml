@@ -37,6 +37,10 @@ jobs:
         run: |
           sed -i 's/id "com.android.application" version "[^"]*"/id "com.android.application" version "8.3.0"/' android/settings.gradle
 
+      - name: Update Gradle wrapper version
+        run: |
+          sed -i 's#distributionUrl=.*#distributionUrl=https\\://services.gradle.org/distributions/gradle-8.4-all.zip#' android/gradle/wrapper/gradle-wrapper.properties
+
       - name: Update compileSdk to 35
         run: |
           sed -i 's/flutter.compileSdkVersion/35/' android/app/build.gradle
