@@ -25,13 +25,13 @@ jobs:
       - name: Copy google-services.json
         run: cp firebase-config/google-services.json android/app/google-services.json
 
-      - name: Add Google services plugin to project build.gradle
+      - name: Register google-services plugin in settings.gradle
         run: |
-          sed -i "s/dependencies {/dependencies {\n        classpath 'com.google.gms:google-services:4.4.0'/" android/build.gradle
+          sed -i '/id "org.jetbrains.kotlin.android" version/a\    id "com.google.gms.google-services" version "4.4.0" apply false' android/settings.gradle
 
-      - name: Add Google services plugin to app build.gradle
+      - name: Apply google-services plugin in app build.gradle
         run: |
-          echo "apply plugin: 'com.google.gms.google-services'" >> android/app/build.gradle
+          sed -i '/id "kotlin-android"/a\    id "com.google.gms.google-services"' android/app/build.gradle
 
       - name: Get dependencies
         run: flutter pub get
